@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
+use App\Models\MJenisListrik;
+use App\Models\MTipeAsset;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TipeAsset extends Controller
 {
@@ -13,6 +17,8 @@ class TipeAsset extends Controller
     public function index()
     {
         //
+        $data =MTipeAsset::all();
+        return response()->json($data);
     }
 
     /**
@@ -29,6 +35,20 @@ class TipeAsset extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(),[
+            'tipe_asset' => ['required','string'],
+        ]);
+        if ($validator->fails()){
+            $errors = $validator->errors()->all();
+            foreach ($errors as $error){
+                notyf()->error($error);
+            }
+            return back();
+        }
+        $validated = $validator->validated();
+        $data = new MTipeAsset($validated);
+        $data->save();
+        return response()->json($data);
     }
 
     /**
@@ -37,6 +57,12 @@ class TipeAsset extends Controller
     public function show(string $id)
     {
         //
+        $data = MTipeAsset::find($id);
+
+        if(!data){
+            return response()->json(null);
+        }
+        return response()->json($data);
     }
 
     /**
@@ -53,6 +79,22 @@ class TipeAsset extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validator = Validator::make($request->all().[
+            'tipe_asset' => 'required', 'string']);
+        if ($validator->fails()){
+            $errors = $validator->errors()->all();
+            foreach($errors as $error){
+                notyf()->error($error);
+            }
+            $validated = $validator->validated();
+            $data = MTipeAsset::find($id);
+            if (!$data){
+                return response()->json(null);
+            }
+            $data->update($validated);
+            return response()->json($data);
+        }
+
     }
 
     /**
@@ -61,5 +103,11 @@ class TipeAsset extends Controller
     public function destroy(string $id)
     {
         //
+        $data = MJenisListrik::find($id);
+        if(!$data){
+            return response()->json(null);
+        }
+        $data->delete();
+        return response()->json(null);
     }
 }
