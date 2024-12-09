@@ -14,10 +14,14 @@ class MAsset extends Model
         'nama',
         'tipe_asset_id',
     ];
-    public function m_tipe_asset(){
-        return $this->belongsTo(MTipeAsset::class,'tipe_asset_id');
+    public $timestamps = false;
+
+    public function m_tipe_asset()
+    {
+        return $this->belongsTo(MTipeAsset::class, 'tipe_asset_id');
     }
-    public function trx_asset(){
-        return $this->belongsToMany(TrxAsset::class,'trx_asset_detail','id_asset','id_pemantauan');
+    public function trx_asset()
+    {
+        return $this->belongsToMany(TrxAsset::class, 'trx_asset_detail', 'id_asset', 'id_pemantauan');
     }
 }

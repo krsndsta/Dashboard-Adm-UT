@@ -14,5 +14,10 @@ class MJenisListrik extends Model
         'nama',
         'deskripsi',
     ];
-    public function trx_pemakaian_listrik(){return $this->hasMany(TrxPemakaianListrik::class,'jenis_listrik_id');}
+    public $timestamps = false;
+
+    public function trx_pemakaian_listrik()
+    {
+        return $this->hasMany(TrxPemakaianListrik::class, 'jenis_listrik_id');
+    }
 }

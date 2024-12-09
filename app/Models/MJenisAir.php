@@ -14,7 +14,10 @@ class MJenisAir extends Model
         'nama',
         'deskripsi',
     ];
-    public function trx_pemakaian_air(){
+    public $timestamps = false;
+
+    public function trx_pemakaian_air()
+    {
         return $this->hasMany(TrxPemakaianAir::class, 'jenis_air_id');
     }
 }
