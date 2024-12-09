@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
-use App\Models\MJenisListrik;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
-class JenisListrik extends Controller
+class JenisListrikController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,15 +15,6 @@ class JenisListrik extends Controller
         //
         $data = MJenisListrik::all();
         return response()->json($data);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-
     }
 
     /**
@@ -63,14 +52,6 @@ class JenisListrik extends Controller
             return response()->json(null);
         }
         return response()->json($data);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
