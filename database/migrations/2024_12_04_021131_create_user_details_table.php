@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_detail', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('foto_profil');
+            $table->string('foto_profil')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
