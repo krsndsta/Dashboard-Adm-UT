@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
-    public function index()
-    {
-        return view('pages.auth.register');
-    }
-
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -43,7 +38,6 @@ class RegisterController extends Controller
 
             DB::commit();
             notyf()->success('Berhasil menambah user!');
-            return redirect()->route('login');
         } catch (\Exception $e) {
             DB::rollBack();
             notyf()->error($e->getMessage());
