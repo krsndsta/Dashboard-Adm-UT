@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TipeAssetController extends Controller
 {
@@ -59,7 +60,7 @@ class TipeAssetController extends Controller
     public function update(Request $request, string $id)
     {
         //
-        $validator = Validator::make($request->all() . [
+        $validator = Validator::make($request->all(),[
             'tipe_asset' => 'required',
             'string'
         ]);
