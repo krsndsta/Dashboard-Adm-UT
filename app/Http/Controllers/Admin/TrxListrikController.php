@@ -1,68 +1,56 @@
 <?php
 
-namespace App\Http\Controllers\Master;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\TrxPemakaianListrik;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use PhpParser\Builder\FunctionLike;
 
-class JenisListrikController extends Controller
+class TrxListrikController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
-        $data = MJenisListrik::all();
+        $data = TrxPemakaianListrik::with('m_jenis_listrik')->all();
         return response()->json($data);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-        $validator = Validator::make($request->all(), [
-            'nama' => ['required', 'string'],
-            'deskripsi' => ['required', 'string'],
-        ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors()->all();
-            foreach ($errors as $error) {
-                notyf()->error($error);
-            }
-            return back();
-        }
-        $validated = $validator->validated();
-        $data = new MJenisListrik($validated);
-        $data->save();
-        return response()->json($data);
-    }
-
-    /**
-     * Display the specified resource.
-     */
+    
     public function show($id)
     {
-        //
-        $data = MJenisListrik::find($id);
-
-        if (!$data) {
+        $data = TrxPemakaianListrik::with('m_jenis_listrik')->find($id);
+        if(!$data){
             return response()->json(null);
         }
         return response()->json($data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    public function store(Request $request){
+        $validator = Validator::make($request->all(), [
+            'jenis_listrik_id' =>['required', 'integer', 'exists:m_jenis_listrik,id'],
+            'nilai' => ['required', 'float'],
+            'datetime' => ['required', 'date'],
+        ]);
+        if ($validator->fails()){
+            $errors = $validator->errors()->all();
+            foreach ($errors as $error){
+                notyf()->error($error);
+            }
+            return back();
+        }
+        $validated = $validator->validated();
+        $data = new TrxPemakaianListrik($validated);
+        $data->save();
+
+        return response()->json($data);
+    }
+
     public function update(Request $request, $id)
     {
-        //
         $validator = Validator::make($request->all(), [
-            'nama' => ['required', 'string'],
-            'deskripsi' => ['required', 'string'],
+            'jenis_listrik_id' =>['required', 'integer', 'exists:m_jenis_listrik,id'],
+            'nilai' => ['required', 'float'],
+            'datetime' => ['required', 'date'],
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
@@ -72,25 +60,28 @@ class JenisListrikController extends Controller
             return back();
         }
         $validated = $validator->validated();
-        $data = MJenisListrik::find($id);
+
+        $data = TrxPemakaianListrik::find($id);
+
         if (!$data) {
             return response()->json(null);
         }
+
         $data->update($validated);
+
         return response()->json($data);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
-        //
-        $data = MJenisListrik::find($id);
+        $data = TrxPemakaianListrik::find($id);
+
         if (!$data) {
             return response()->json(null);
         }
+
         $data->delete();
         return response()->json(null);
     }
+
 }

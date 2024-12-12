@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
         try {
             $credential = $request->only('email', 'password');
             if (Auth::attempt($credential)) {
-                return redirect('dashboard');
+                return redirect('home');
             }
             notyf()->error('ID atau Password salah!');
         } catch (\Exception $e) {
