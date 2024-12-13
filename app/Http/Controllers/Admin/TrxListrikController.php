@@ -15,25 +15,26 @@ class TrxListrikController extends Controller
         $data = TrxPemakaianListrik::with('m_jenis_listrik')->all();
         return response()->json($data);
     }
-    
+
     public function show($id)
     {
         $data = TrxPemakaianListrik::with('m_jenis_listrik')->find($id);
-        if(!$data){
+        if (!$data) {
             return response()->json(null);
         }
         return response()->json($data);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-            'jenis_listrik_id' =>['required', 'integer', 'exists:m_jenis_listrik,id'],
+            'jenis_listrik_id' => ['required', 'integer', 'exists:m_jenis_listrik,id'],
             'nilai' => ['required', 'float'],
             'datetime' => ['required', 'date'],
         ]);
-        if ($validator->fails()){
+        if ($validator->fails()) {
             $errors = $validator->errors()->all();
-            foreach ($errors as $error){
+            foreach ($errors as $error) {
                 notyf()->error($error);
             }
             return back();
@@ -48,7 +49,7 @@ class TrxListrikController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'jenis_listrik_id' =>['required', 'integer', 'exists:m_jenis_listrik,id'],
+            'jenis_listrik_id' => ['required', 'integer', 'exists:m_jenis_listrik,id'],
             'nilai' => ['required', 'float'],
             'datetime' => ['required', 'date'],
         ]);
@@ -83,5 +84,4 @@ class TrxListrikController extends Controller
         $data->delete();
         return response()->json(null);
     }
-
 }
